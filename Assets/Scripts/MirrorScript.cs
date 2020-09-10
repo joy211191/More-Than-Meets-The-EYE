@@ -10,6 +10,8 @@ public class MirrorScript : MonoBehaviour
     Transform cameraTransform;
     [SerializeField]
     Camera secondaryCamera;
+    [SerializeField]
+    float cameraYPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,6 @@ public class MirrorScript : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        transform.position = playerObject.position + new Vector3(0, 20, 0);
+        transform.position = playerObject.position + new Vector3(0, cameraYPosition, 0);
     }
 }
