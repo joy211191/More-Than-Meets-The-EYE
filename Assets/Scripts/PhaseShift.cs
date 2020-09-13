@@ -11,13 +11,20 @@ public class PhaseShift : MonoBehaviour
     float alphaValue=0;
     [SerializeField]
     GameObject subjectiveBlip;
+    RealityShifter realityShifter;
 
+
+    void Awake () {
+        realityShifter = FindObjectOfType<RealityShifter>();
+    }
 
     private void Update () {
         if (resetColor) {
-            alphaValue += Time.deltaTime / 2;
-            rawImage.color = new Color(1, 1, 1, alphaValue);
-            if (alphaValue >= 1) {
+            if (alphaValue < realityShifter.animationCurve.Evaluate((float)realityShifter.blipsCollected)) {
+                alphaValue += Time.deltaTime / realityShifter.multiplier;
+                rawImage.color = new Color(1, 1, 1, alphaValue);
+            }
+            if (alphaValue >= realityShifter.animationCurve.Evaluate((float)realityShifter.blipsCollected)) {
                 Destroy(subjectiveBlip);
                 Destroy(gameObject);
             }
@@ -28,6 +35,7 @@ public class PhaseShift : MonoBehaviour
         rawImage.color = new Color(1, 1, 1, 0);
         alphaValue = 0;
         resetColor = true;
+        realityShifter.UpdateBlips();
     }
 
 }
